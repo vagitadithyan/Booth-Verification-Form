@@ -7,7 +7,10 @@
    <script src="https://cdn.tailwindcss.com"></script>
    <style>
        @import url('https://fonts.googleapis.com/css2?family=Manjari:wght@400;700&display=swap');
-       body { font-family: 'Manjari', sans-serif; }
+       body {
+           font-family: 'Manjari', sans-serif;
+           background-color: #f8fafc;
+       }
        .loader {
            border: 3px solid #f3f3f3;
            border-top: 3px solid #059669;
@@ -20,90 +23,152 @@
            margin-right: 8px;
        }
        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+      
+       /* സെക്ഷൻ ഹെഡിംഗിനുള്ള സ്റ്റൈൽ */
+       .main-section-title {
+           font-size: 1.125rem;
+           font-weight: 700;
+           color: #065f46;
+           margin-bottom: 0.5rem;
+           display: flex;
+           align-items: center;
+           gap: 0.5rem;
+       }
+
+
+       .section-separator {
+           height: 2px;
+           background: linear-gradient(to right, #10b981, transparent);
+           margin-bottom: 1.5rem;
+           border-radius: 2px;
+       }
+
+
+       .input-group-container {
+           background-color: #ffffff;
+           padding: 1.5rem;
+           border-radius: 1rem;
+           border: 1px solid #e2e8f0;
+           margin-bottom: 2.5rem;
+           box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+       }
    </style>
 </head>
-<body class="bg-slate-50 min-h-screen py-6 px-4">
+<body class="min-h-screen py-10 px-4">
 
 
-   <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
-       <!-- Header -->
-       <div class="bg-gradient-to-r from-emerald-600 to-teal-700 p-8 text-white">
-           <h1 class="text-2xl font-bold mb-2">ബൂത്ത് വെരിഫിക്കേഷൻ ഫോറം</h1>
-           <p class="text-emerald-100 opacity-90 text-sm">വിവരങ്ങൾ നേരിട്ട് ഗൂഗിൾ ഷീറ്റിലേക്ക് രേഖപ്പെടുത്താം.</p>
+   <div class="max-w-3xl mx-auto bg-white rounded-[2rem] shadow-2xl overflow-hidden border border-slate-200">
+       <!-- Main Header -->
+       <div class="bg-gradient-to-br from-emerald-600 to-teal-800 p-8 text-white text-center">
+           <h1 class="text-3xl font-bold mb-2">ബൂത്ത് വെരിഫിക്കേഷൻ ഫോറം</h1>
+           <p class="text-emerald-100 opacity-90 text-sm">വിവരങ്ങൾ കൃത്യമായി രേഖപ്പെടുത്തി ഗൂഗിൾ ഷീറ്റിലേക്ക് സമർപ്പിക്കുക.</p>
        </div>
 
 
-       <form id="verificationForm" class="p-6 md:p-8 space-y-8">
+       <form id="verificationForm" class="p-6 md:p-10">
            <!-- Messages -->
-           <div id="successMsg" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-700 p-4 rounded-xl flex items-center gap-3">
+           <div id="successMsg" class="hidden mb-8 bg-emerald-50 border border-emerald-200 text-emerald-700 p-4 rounded-xl flex items-center gap-3">
                <span class="text-xl">✅</span>
                <p class="font-medium">വിവരങ്ങൾ വിജയകരമായി ഷീറ്റിൽ രേഖപ്പെടുത്തി!</p>
            </div>
-           <div id="errorMsg" class="hidden bg-rose-50 border border-rose-200 text-rose-700 p-4 rounded-xl flex items-center gap-3">
+           <div id="errorMsg" class="hidden mb-8 bg-rose-50 border border-rose-200 text-rose-700 p-4 rounded-xl flex items-center gap-3">
                <span class="text-xl">⚠️</span>
                <p id="errorText" class="font-medium">സമർപ്പിക്കുന്നതിൽ പിശക് ഉണ്ടായി.</p>
            </div>
 
 
-           <!-- Location Section -->
-           <div class="space-y-6">
-               <h2 class="text-emerald-600 font-bold border-b pb-2">സ്ഥല വിവരങ്ങൾ</h2>
-               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                   <div class="space-y-1">
-                       <label class="text-sm font-semibold text-slate-700">സംഘടനാ ജില്ല *</label>
-                       <select id="orgDistrict" required class="w-full rounded-xl border-slate-200 bg-slate-50 p-3 border-2 outline-none focus:border-emerald-500"></select>
+           <!-- Section 1: Location -->
+           <div class="main-section-title">
+               <span>📍</span> സ്ഥല വിവരങ്ങൾ
+           </div>
+           <div class="section-separator"></div>
+          
+           <div class="input-group-container">
+               <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                   <div class="space-y-1.5">
+                       <label class="text-sm font-bold text-slate-600 ml-1">സംഘടനാ ജില്ല *</label>
+                       <select id="orgDistrict" required class="w-full rounded-xl border-slate-200 bg-slate-50 p-3.5 border-2 outline-none focus:border-emerald-500 transition-colors"></select>
                    </div>
-                   <div class="space-y-1">
-                       <label class="text-sm font-semibold text-slate-700">നിയോജക മണ്ഡലം *</label>
-                       <select id="acName" required disabled class="w-full rounded-xl border-slate-200 bg-slate-50 p-3 border-2 outline-none focus:border-emerald-500 disabled:opacity-50"></select>
+                   <div class="space-y-1.5">
+                       <label class="text-sm font-bold text-slate-600 ml-1">നിയോജക മണ്ഡലം *</label>
+                       <select id="acName" required disabled class="w-full rounded-xl border-slate-200 bg-slate-50 p-3.5 border-2 outline-none focus:border-emerald-500 disabled:opacity-50 transition-colors"></select>
                    </div>
-                   <div class="space-y-1 md:col-span-2">
-                       <label class="text-sm font-semibold text-slate-700">സംഘടനാ മണ്ഡലം *</label>
-                       <select id="orgMandal" required disabled class="w-full rounded-xl border-slate-200 bg-slate-50 p-3 border-2 outline-none focus:border-emerald-500 disabled:opacity-50"></select>
+                   <div class="space-y-1.5 md:col-span-2">
+                       <label class="text-sm font-bold text-slate-600 ml-1">സംഘടനാ മണ്ഡലം *</label>
+                       <select id="orgMandal" required disabled class="w-full rounded-xl border-slate-200 bg-slate-50 p-3.5 border-2 outline-none focus:border-emerald-500 disabled:opacity-50 transition-colors"></select>
                    </div>
                </div>
            </div>
 
 
-           <!-- Personnel Section -->
-           <div class="space-y-6">
-               <h2 class="text-emerald-600 font-bold border-b pb-2">ചുമതലയുള്ളവർ</h2>
-               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                   <input type="text" id="mandalPresident" placeholder="മണ്ഡലം പ്രസിഡന്റ്" required class="w-full rounded-xl border-slate-200 bg-slate-50 p-3 border-2 outline-none focus:border-emerald-500">
-                   <input type="text" id="mandalPrabhari" placeholder="മണ്ഡലം പ്രഭാരി" required class="w-full rounded-xl border-slate-200 bg-slate-50 p-3 border-2 outline-none focus:border-emerald-500">
-                   <input type="text" id="shaktiKendraIncharge" placeholder="ശക്തികേന്ദ്ര ഇൻചാർജ്" required class="w-full rounded-xl border-slate-200 bg-slate-50 p-3 border-2 outline-none focus:border-emerald-500">
-                   <input type="tel" id="phoneNumber" placeholder="മൊബൈൽ നമ്പർ" required pattern="[0-9]{10}" title="10 അക്ക മൊബൈൽ നമ്പർ നൽകുക" class="w-full rounded-xl border-slate-200 bg-slate-50 p-3 border-2 outline-none focus:border-emerald-500">
-                   <input type="text" id="position" placeholder="സംഘടനാ ചുമതല" required class="w-full md:col-span-2 rounded-xl border-slate-200 bg-slate-50 p-3 border-2 outline-none focus:border-emerald-500">
+           <!-- Section 2: Personnel -->
+           <div class="main-section-title">
+               <span>👤</span> ചുമതലയുള്ളവർ
+           </div>
+           <div class="section-separator"></div>
+
+
+           <div class="input-group-container">
+               <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                   <div class="space-y-1.5">
+                       <label class="text-sm font-bold text-slate-600 ml-1">മണ്ഡലം പ്രസിഡന്റ് *</label>
+                       <input type="text" id="mandalPresident" placeholder="പേര് നൽകുക" required class="w-full rounded-xl border-slate-200 bg-slate-50 p-3.5 border-2 outline-none focus:border-emerald-500 transition-colors">
+                   </div>
+                   <div class="space-y-1.5">
+                       <label class="text-sm font-bold text-slate-600 ml-1">മണ്ഡലം പ്രഭാരി *</label>
+                       <input type="text" id="mandalPrabhari" placeholder="പേര് നൽകുക" required class="w-full rounded-xl border-slate-200 bg-slate-50 p-3.5 border-2 outline-none focus:border-emerald-500 transition-colors">
+                   </div>
+                   <div class="space-y-1.5">
+                       <label class="text-sm font-bold text-slate-600 ml-1">ശക്തികേന്ദ്ര ഇൻചാർജ് *</label>
+                       <input type="text" id="shaktiKendraIncharge" placeholder="പേര് നൽകുക" required class="w-full rounded-xl border-slate-200 bg-slate-50 p-3.5 border-2 outline-none focus:border-emerald-500 transition-colors">
+                   </div>
+                   <div class="space-y-1.5">
+                       <label class="text-sm font-bold text-slate-600 ml-1">മൊബൈൽ നമ്പർ *</label>
+                       <input type="tel" id="phoneNumber" placeholder="10 അക്ക നമ്പർ" required pattern="[0-9]{10}" class="w-full rounded-xl border-slate-200 bg-slate-50 p-3.5 border-2 outline-none focus:border-emerald-500 transition-colors">
+                   </div>
+                   <div class="space-y-1.5 md:col-span-2">
+                       <label class="text-sm font-bold text-slate-600 ml-1">സംഘടനാ ചുമതല *</label>
+                       <input type="text" id="position" placeholder="നിലവിലെ ചുമതല" required class="w-full rounded-xl border-slate-200 bg-slate-50 p-3.5 border-2 outline-none focus:border-emerald-500 transition-colors">
+                   </div>
                </div>
            </div>
 
 
-           <!-- Booth Count -->
-           <div class="bg-emerald-50 p-6 rounded-2xl border border-emerald-100">
-               <label class="block mb-2 font-bold text-emerald-800">ശക്തി കേന്ദ്രയിലെ ആകെ ബൂത്തുകൾ *</label>
-               <select id="noOfBooths" required class="w-full md:w-48 rounded-xl border-white bg-white shadow-sm p-3 border-2 outline-none focus:border-emerald-500">
-                   <option value="0">തിരഞ്ഞെടുക്കുക</option>
-                   <option value="1">1</option>
-                   <option value="2">2</option>
-                   <option value="3">3</option>
-                   <option value="4">4</option>
-                   <option value="5">5</option>
-               </select>
+           <!-- Section 3: Booth Details -->
+           <div class="main-section-title">
+               <span>📑</span> ബൂത്ത് വിവരങ്ങൾ
+           </div>
+           <div class="section-separator"></div>
+
+
+           <div class="input-group-container">
+               <div class="bg-emerald-50 p-5 rounded-xl border border-emerald-100 mb-6">
+                   <label class="block mb-2 font-bold text-emerald-800">ശക്തി കേന്ദ്രയിലെ ആകെ ബൂത്തുകൾ *</label>
+                   <select id="noOfBooths" required class="w-full md:w-56 rounded-xl border-emerald-200 bg-white shadow-sm p-3 border-2 outline-none focus:border-emerald-500">
+                       <option value="0">തിരഞ്ഞെടുക്കുക</option>
+                       <option value="1">1</option>
+                       <option value="2">2</option>
+                       <option value="3">3</option>
+                       <option value="4">4</option>
+                       <option value="5">5</option>
+                   </select>
+               </div>
+              
+               <!-- Dynamic Booths Container -->
+               <div id="boothContainer" class="space-y-6"></div>
            </div>
 
 
-           <!-- Dynamic Booths Container -->
-           <div id="boothContainer" class="space-y-4"></div>
-
-
-           <button type="submit" id="submitBtn" class="w-full py-4 rounded-2xl text-white font-bold text-lg bg-emerald-600 hover:bg-emerald-700 shadow-lg transition-all flex items-center justify-center">
-               <span>ഷീറ്റിലേക്ക് സമർപ്പിക്കുക</span>
-           </button>
+           <div class="pt-4">
+               <button type="submit" id="submitBtn" class="w-full py-4.5 rounded-2xl text-white font-bold text-xl bg-emerald-600 hover:bg-emerald-700 shadow-xl hover:shadow-emerald-200 transition-all flex items-center justify-center gap-2 transform active:scale-[0.98]">
+                   <span>സമർപ്പിക്കുക</span>
+               </button>
+           </div>
        </form>
 
 
-       <div class="bg-slate-50 p-4 border-t border-slate-100 text-center text-slate-400 text-xs">
-           ബൂത്ത് വെരിഫിക്കേഷൻ സിസ്റ്റം &copy; 2026
+       <div class="bg-slate-50 p-5 border-t border-slate-100 text-center text-slate-400 text-xs">
+           ബൂത്ത് വെരിഫിക്കേഷൻ സിസ്റ്റം &copy; 2026 | Digital Verification Cell
        </div>
    </div>
 
@@ -291,7 +356,6 @@
        };
 
 
-       // Populate Districts
        const distSelect = document.getElementById('orgDistrict');
        distSelect.innerHTML = '<option value="">തിരഞ്ഞെടുക്കുക</option>' + DATA.districts.map(d => `<option value="${d}">${d}</option>`).join('');
 
@@ -326,7 +390,6 @@
        });
 
 
-       // Dynamic Booth Fields
        document.getElementById('noOfBooths').addEventListener('change', (e) => {
            const count = parseInt(e.target.value);
            const container = document.getElementById('boothContainer');
@@ -337,16 +400,24 @@
                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative animate-in slide-in-from-bottom-2">
                    <div class="absolute top-0 left-6 -translate-y-1/2 bg-white px-3 py-1 rounded-full border border-slate-200 text-xs font-bold text-slate-500">ബൂത്ത് ${i}</div>
                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
-                       <input type="text" placeholder="ബൂത്ത് നമ്പർ" required class="booth-no w-full rounded-lg border-slate-200 py-2 px-3 border-2 outline-none focus:border-emerald-500">
-                       <input type="text" placeholder="ബൂത്ത് ഇൻചാർജ്" required class="booth-incharge w-full rounded-lg border-slate-200 py-2 px-3 border-2 outline-none focus:border-emerald-500">
-                       <input type="tel" placeholder="മൊബൈൽ" required pattern="[0-9]{10}" class="booth-phone w-full rounded-lg border-slate-200 py-2 px-3 border-2 outline-none focus:border-emerald-500">
+                       <div class="space-y-1">
+                           <label class="text-xs font-bold text-slate-500 ml-1">ബൂത്ത് നമ്പർ</label>
+                           <input type="text" placeholder="ഉദാ: 101" required class="booth-no w-full rounded-lg border-slate-200 py-2.5 px-3 border-2 outline-none focus:border-emerald-500">
+                       </div>
+                       <div class="space-y-1">
+                           <label class="text-xs font-bold text-slate-500 ml-1">ഇൻചാർജ് പേര്</label>
+                           <input type="text" placeholder="പേര്" required class="booth-incharge w-full rounded-lg border-slate-200 py-2.5 px-3 border-2 outline-none focus:border-emerald-500">
+                       </div>
+                       <div class="space-y-1">
+                           <label class="text-xs font-bold text-slate-500 ml-1">മൊബൈൽ</label>
+                           <input type="tel" placeholder="മൊബൈൽ" required pattern="[0-9]{10}" class="booth-phone w-full rounded-lg border-slate-200 py-2.5 px-3 border-2 outline-none focus:border-emerald-500">
+                       </div>
                    </div>
                </div>`;
            }
        });
 
 
-       // Submission
        document.getElementById('verificationForm').addEventListener('submit', async (e) => {
            e.preventDefault();
            const submitBtn = document.getElementById('submitBtn');
@@ -386,7 +457,6 @@
 
 
            try {
-               // Post to Google Apps Script
                await fetch(GOOGLE_SCRIPT_URL, {
                    method: 'POST',
                    mode: 'no-cors',
@@ -406,12 +476,10 @@
                errorMsg.classList.remove('hidden');
            } finally {
                submitBtn.disabled = false;
-               submitBtn.innerHTML = '<span>ഷീറ്റിലേക്ക് സമർപ്പിക്കുക</span>';
+               submitBtn.innerHTML = '<span>സമർപ്പിക്കുക</span>';
            }
        });
    </script>
 </body>
 </html>
-
-
 
