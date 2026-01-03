@@ -6,56 +6,57 @@
 <title>ബൂത്ത് വെരിഫിക്കേഷൻ ഫോറം</title>
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#667eea,#764ba2);
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
+body{
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px
 }
-.form-container {
-    background:#fff;
-    padding:30px;
-    border-radius:12px;
-    width:100%;
-    max-width:800px;
+.form-container{
+  background:#fff;
+  padding:30px;
+  border-radius:12px;
+  width:100%;
+  max-width:900px
 }
 h1{text-align:center}
 .subtitle{text-align:center;color:#666;margin-bottom:20px}
 label{font-weight:bold;display:block;margin-bottom:5px}
 input,select{
-    width:100%;
-    padding:10px;
-    margin-bottom:15px;
-    border-radius:6px;
-    border:1px solid #ccc;
+  width:100%;
+  padding:10px;
+  margin-bottom:15px;
+  border-radius:6px;
+  border:1px solid #ccc
 }
+select:disabled{background:#f0f0f0}
 button{
-    width:100%;
-    padding:12px;
-    background:#667eea;
-    color:#fff;
-    border:none;
-    border-radius:8px;
-    font-size:16px;
-    cursor:pointer;
+  width:100%;
+  padding:12px;
+  background:#667eea;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  font-size:16px;
+  cursor:pointer
 }
 button:disabled{background:#aaa}
 .success-message,.error-message{
-    margin-top:15px;
-    padding:12px;
-    border-radius:6px;
-    display:none;
+  margin-top:15px;
+  padding:12px;
+  border-radius:6px;
+  display:none
 }
 .success-message{background:#d4edda;color:#155724}
 .error-message{background:#f8d7da;color:#721c24}
 .booth-set{
-    background:#f5f5f5;
-    padding:15px;
-    border-radius:8px;
-    margin-bottom:15px;
+  background:#f5f5f5;
+  padding:15px;
+  border-radius:8px;
+  margin-bottom:15px
 }
 </style>
 </head>
@@ -69,13 +70,19 @@ button:disabled{background:#aaa}
 <form id="orgForm">
 
 <label>സംഘടനാ ജില്ല</label>
-<input id="orgDistrict" required>
+<select id="orgDistrict" required>
+  <option value="">-- തിരഞ്ഞെടുക്കുക --</option>
+</select>
 
 <label>നിയോജക മണ്ഡലം</label>
-<input id="acName" required>
+<select id="acName" required disabled>
+  <option value="">-- തിരഞ്ഞെടുക്കുക --</option>
+</select>
 
 <label>സംഘടനാ മണ്ഡലം</label>
-<input id="orgMandal" required>
+<select id="orgMandal" required disabled>
+  <option value="">-- തിരഞ്ഞെടുക്കുക --</option>
+</select>
 
 <label>മണ്ഡലം പ്രസിഡന്റ്</label>
 <input id="mandalPresident" required>
@@ -94,8 +101,8 @@ button:disabled{background:#aaa}
 
 <label>ആകെ ബൂത്തുകൾ</label>
 <select id="noOfBooths" required>
-<option value="">-- തിരഞ്ഞെടുക്കുക --</option>
-<option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+  <option value="">-- തിരഞ്ഞെടുക്കുക --</option>
+  <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
 </select>
 
 <div id="boothDetailsContainer"></div>
@@ -109,28 +116,74 @@ button:disabled{background:#aaa}
 </div>
 
 <script>
+// 🔴 GOOGLE APPS SCRIPT WEB APP URL
 const GOOGLE_SHEETS_WEB_APP_URL =
 "https://script.google.com/a/macros/varaheanalytics.com/s/AKfycbYqA2YCBRJmwrmcfvtdNjrPvJFzD6ELnXDFuEJNGQUAXeAst0dIjMcDJ9URW3qcZsau/exec";
 
-/* Booth fields */
-document.getElementById("noOfBooths").addEventListener("change", e=>{
-    const c=parseInt(e.target.value||0);
-    const box=document.getElementById("boothDetailsContainer");
-    box.innerHTML="";
-    for(let i=1;i<=c;i++){
-        box.innerHTML+=`
-        <div class="booth-set">
-            <label>ബൂത്ത് നമ്പർ ${i}</label>
-            <input id="boothNo_${i}" required>
-            <label>ബൂത്ത് ഇൻചാർജ് ${i}</label>
-            <input id="boothIncharge_${i}" required>
-            <label>മൊബൈൽ നമ്പർ ${i}</label>
-            <input id="phone_${i}" required>
-        </div>`;
-    }
+/* ===== DROPDOWN DATA (SHORTENED SAMPLE – YOU CAN EXTEND) ===== */
+const DATA = {
+  "Thiruvananthapuram South":["Aruvikkara","Kattakada","Kovalam"],
+  "Thiruvananthapuram North":["Attingal","Varkala"],
+  "Palakkad East":["Malampuzha","Palakkad"],
+  "Palakkad West":["Ottapalam","Shornur"]
+};
+
+const MANDALS = {
+  "Malampuzha":["Malampuzha","Puthussery"],
+  "Palakkad":["Palakkad","Pirayiri"],
+  "Ottapalam":["Ottapalam","Sreekrishnapuram"],
+  "Shornur":["Shornur","Cherpulassery"]
+};
+
+// Populate districts
+const orgDistrict=document.getElementById("orgDistrict");
+Object.keys(DATA).forEach(d=>{
+  orgDistrict.innerHTML+=`<option value="${d}">${d}</option>`;
 });
 
-/* Submit */
+// District → Assembly
+orgDistrict.addEventListener("change",e=>{
+  const ac=document.getElementById("acName");
+  ac.innerHTML='<option value="">-- തിരഞ്ഞെടുക്കുക --</option>';
+  document.getElementById("orgMandal").innerHTML='<option value="">-- തിരഞ്ഞെടുക്കുക --</option>';
+  document.getElementById("orgMandal").disabled=true;
+  if(!e.target.value){ac.disabled=true;return}
+  DATA[e.target.value].forEach(a=>{
+    ac.innerHTML+=`<option value="${a}">${a}</option>`;
+  });
+  ac.disabled=false;
+});
+
+// Assembly → Mandal
+document.getElementById("acName").addEventListener("change",e=>{
+  const m=document.getElementById("orgMandal");
+  m.innerHTML='<option value="">-- തിരഞ്ഞെടുക്കുക --</option>';
+  if(!e.target.value){m.disabled=true;return}
+  (MANDALS[e.target.value]||[]).forEach(x=>{
+    m.innerHTML+=`<option value="${x}">${x}</option>`;
+  });
+  m.disabled=false;
+});
+
+// Booth fields
+document.getElementById("noOfBooths").addEventListener("change",e=>{
+  const c=parseInt(e.target.value||0);
+  const box=document.getElementById("boothDetailsContainer");
+  box.innerHTML="";
+  for(let i=1;i<=c;i++){
+    box.innerHTML+=`
+    <div class="booth-set">
+      <label>ബൂത്ത് നമ്പർ ${i}</label>
+      <input id="boothNo_${i}" required>
+      <label>ബൂത്ത് ഇൻചാർജ് ${i}</label>
+      <input id="boothIncharge_${i}" required>
+      <label>മൊബൈൽ നമ്പർ ${i}</label>
+      <input id="phone_${i}" required>
+    </div>`;
+  }
+});
+
+// Submit
 document.getElementById("orgForm").addEventListener("submit",e=>{
 e.preventDefault();
 
@@ -138,60 +191,56 @@ const btn=document.getElementById("submitBtn");
 const ok=document.getElementById("successMessage");
 const err=document.getElementById("errorMessage");
 
-ok.style.display="none";
-err.style.display="none";
-btn.disabled=true;
+btn.disabled=true; ok.style.display="none"; err.style.display="none";
 
 const booths=[];
-const n=parseInt(document.getElementById("noOfBooths").value||0);
+const n=parseInt(noOfBooths.value||0);
 for(let i=1;i<=n;i++){
-    booths.push({
-        boothNo:document.getElementById(`boothNo_${i}`).value,
-        boothIncharge:document.getElementById(`boothIncharge_${i}`).value,
-        phone:document.getElementById(`phone_${i}`).value
-    });
+  booths.push({
+    boothNo:document.getElementById(`boothNo_${i}`).value,
+    boothIncharge:document.getElementById(`boothIncharge_${i}`).value,
+    phone:document.getElementById(`phone_${i}`).value
+  });
 }
 
 const payload={
-    orgDistrict:document.getElementById("orgDistrict").value,
-    acName:document.getElementById("acName").value,
-    orgMandal:document.getElementById("orgMandal").value,
-    mandalPresident:document.getElementById("mandalPresident").value,
-    mandalPrabhari:document.getElementById("mandalPrabhari").value,
-    shaktiKendraIncharge:document.getElementById("shaktiKendraIncharge").value,
-    phoneNumber:document.getElementById("phoneNumber").value,
-    position:document.getElementById("position").value,
-    booths,
-    timestamp:new Date().toISOString()
+  orgDistrict:orgDistrict.value,
+  acName:acName.value,
+  orgMandal:orgMandal.value,
+  mandalPresident:mandalPresident.value,
+  mandalPrabhari:mandalPrabhari.value,
+  shaktiKendraIncharge:shaktiKendraIncharge.value,
+  phoneNumber:phoneNumber.value,
+  position:position.value,
+  booths,
+  timestamp:new Date().toISOString()
 };
 
 fetch(GOOGLE_SHEETS_WEB_APP_URL,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify(payload)
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify(payload)
 })
 .then(r=>r.text())
 .then(t=>{
-    if(t.trim()==="success"){
-        ok.innerHTML="✅ ഫോം വിജയകരമായി സമർപ്പിച്ചു";
-        ok.style.display="block";
-        document.getElementById("orgForm").reset();
-        document.getElementById("boothDetailsContainer").innerHTML="";
-    } else {
-        throw new Error(t);
-    }
+  if(t.trim()==="success"){
+    ok.innerHTML="✅ ഫോം വിജയകരമായി സമർപ്പിച്ചു";
+    ok.style.display="block";
+    orgForm.reset();
+    boothDetailsContainer.innerHTML="";
+  } else throw new Error(t);
 })
 .catch(()=>{
-    err.innerHTML="❌ ഡാറ്റ Google Sheet-ൽ സേവ് ചെയ്യാൻ കഴിഞ്ഞില്ല";
-    err.style.display="block";
+  err.innerHTML="❌ ഡാറ്റ Google Sheet-ൽ സേവ് ചെയ്യാൻ കഴിഞ്ഞില്ല";
+  err.style.display="block";
 })
 .finally(()=>btn.disabled=false);
-
 });
 </script>
 
 </body>
 </html>
+
 
 
 
