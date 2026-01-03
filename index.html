@@ -1,1403 +1,205 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ബൂത്ത് വെരിഫിക്കേഷൻ ഫോറം</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
+    <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             min-height: 100vh;
-            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
-
         .form-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 40px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
             max-width: 800px;
+        }
+        h1 { text-align: center; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 20px; }
+
+        label { font-weight: bold; display: block; margin-bottom: 5px; }
+        select, input {
             width: 100%;
-            animation: slideUp 0.5s ease-out;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
         }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 28px;
-            text-align: center;
-        }
-
-        .subtitle {
-            color: #666;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .required {
-            color: #e74c3c;
-        }
-
-        select, input[type="text"], input[type="tel"] {
+        button {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            background: white;
-        }
-
-        select:focus, input[type="text"]:focus, input[type="tel"]:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        select:disabled {
-            background-color: #f5f5f5;
-            color: #999;
-            cursor: not-allowed;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            padding: 12px;
+            background: #667eea;
+            color: #fff;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 16px;
-            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
         }
+        button:disabled { background: #aaa; }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-
-        .submit-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
+        .success-message, .error-message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
             display: none;
-            border: 1px solid #c3e6cb;
         }
-
-        .error-message {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            display: none;
-            border: 1px solid #f5c6cb;
-        }
-
-        .loading {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-            margin-left: 10px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .section-divider {
-            margin: 30px 0;
-            border-top: 2px solid #e0e0e0;
-        }
-
-        .section-title {
-            color: #667eea;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
+        .success-message { background: #d4edda; color: #155724; }
+        .error-message { background: #f8d7da; color: #721c24; }
 
         .booth-set {
-            margin-bottom: 30px;
-            padding: 20px;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-        }
-
-        .booth-set-title {
-            color: #667eea;
-            font-size: 16px;
-            font-weight: 600;
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
             margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        @media (max-width: 600px) {
-            .form-container {
-                padding: 25px;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
         }
     </style>
 </head>
+
 <body>
-    <div class="form-container">
-        <h1>ബൂത്ത് വെരിഫിക്കേഷൻ ഫോറം</h1>
-        <p class="subtitle">ദയവായി എല്ലാ ആവശ്യമായ ഫീൽഡുകളും പൂരിപ്പിക്കുക</p>
-        
-        <form id="orgForm">
-            <div class="form-group">
-                <label for="orgDistrict">സംഘടനാ ജില്ല <span class="required">*</span></label>
-                <select id="orgDistrict" name="orgDistrict" required>
-                    <option value="">-- സംഘടനാ ജില്ല തിരഞ്ഞെടുക്കുക --</option>
-                </select>
-            </div>
 
-            <div class="form-group">
-                <label for="acName">നിയോജക മണ്ഡലം <span class="required">*</span></label>
-                <select id="acName" name="acName" required disabled>
-                    <option value="">-- നിയോജക മണ്ഡലം തിരഞ്ഞെടുക്കുക --</option>
-                </select>
-            </div>
+<div class="form-container">
+    <h1>ബൂത്ത് വെരിഫിക്കേഷൻ ഫോറം</h1>
+    <p class="subtitle">ദയവായി എല്ലാ ആവശ്യമായ വിവരങ്ങളും നൽകുക</p>
 
-            <div class="form-group">
-                <label for="orgMandal">സംഘടനാ മണ്ഡലം <span class="required">*</span></label>
-                <select id="orgMandal" name="orgMandal" required disabled>
-                    <option value="">-- സംഘടനാ മണ്ഡലം തിരഞ്ഞെടുക്കുക --</option>
-                </select>
-            </div>
+    <form id="orgForm">
 
-            <div class="form-group">
-                <label for="mandalPresident">മണ്ഡലം പ്രസിഡന്റ് <span class="required">*</span></label>
-                <input type="text" id="mandalPresident" name="mandalPresident" placeholder="മണ്ഡലം പ്രസിഡന്റ് പേര് നൽകുക" required>
-            </div>
+        <label>സംഘടനാ ജില്ല</label>
+        <input id="orgDistrict" required>
 
-            <div class="form-group">
-                <label for="mandalPrabhari">മണ്ഡലം പ്രഭാരി <span class="required">*</span></label>
-                <input type="text" id="mandalPrabhari" name="mandalPrabhari" placeholder="മണ്ഡലം പ്രഭാരി പേര് നൽകുക" required>
-            </div>
+        <label>നിയോജക മണ്ഡലം</label>
+        <input id="acName" required>
 
-            <div class="form-group">
-                <label for="shaktiKendraIncharge">ശക്തികേന്ദ്ര ഇൻചാർജ് <span class="required">*</span></label>
-                <input type="text" id="shaktiKendraIncharge" name="shaktiKendraIncharge" placeholder="ശക്തികേന്ദ്ര ഇൻചാർജ് പേര് നൽകുക" required>
-            </div>
+        <label>സംഘടനാ മണ്ഡലം</label>
+        <input id="orgMandal" required>
 
-            <div class="form-group">
-                <label for="phoneNumber">മൊബൈൽ നമ്പർ <span class="required">*</span></label>
-                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="മൊബൈൽ നമ്പർ നൽകുക" required>
-            </div>
+        <label>മണ്ഡലം പ്രസിഡന്റ്</label>
+        <input id="mandalPresident" required>
 
-            <div class="form-group">
-                <label for="position">സംഘടനാ ചുമതല <span class="required">*</span></label>
-                <input type="text" id="position" name="position" placeholder="സംഘടനാ ചുമതല നൽകുക" required>
-            </div>
+        <label>മണ്ഡലം പ്രഭാരി</label>
+        <input id="mandalPrabhari" required>
 
-            <div class="form-group">
-                <label for="noOfBooths">ശക്തി കേന്ദ്രയിലെ ആകെ ബൂത്തുകൾ <span class="required">*</span></label>
-                <select id="noOfBooths" name="noOfBooths" required>
-                    <option value="">-- സംഖ്യ തിരഞ്ഞെടുക്കുക --</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-            </div>
+        <label>ശക്തികേന്ദ്ര ഇൻചാർജ്</label>
+        <input id="shaktiKendraIncharge" required>
 
-            <div class="section-divider"></div>
-            <div class="section-title">ബൂത്ത് വിവരങ്ങൾ</div>
+        <label>മൊബൈൽ നമ്പർ</label>
+        <input id="phoneNumber" required>
 
-            <div id="boothDetailsContainer">
-                <!-- Dynamic booth fields will be inserted here -->
-            </div>
+        <label>സംഘടനാ ചുമതല</label>
+        <input id="position" required>
 
-            <button type="submit" class="submit-btn" id="submitBtn">
-                ഫോം സമർപ്പിക്കുക
-            </button>
+        <label>ആകെ ബൂത്തുകൾ</label>
+        <select id="noOfBooths" required>
+            <option value="">-- തിരഞ്ഞെടുക്കുക --</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
 
-            <div class="success-message" id="successMessage">
-                ഫോം വിജയകരമായി സമർപ്പിച്ചു! ഡാറ്റ Google Sheet-ൽ സേവ് ചെയ്തു. നിങ്ങളുടെ സമർപ്പണത്തിന് നന്ദി.
-            </div>
+        <div id="boothDetailsContainer"></div>
 
-            <div class="error-message" id="errorMessage">
-                ഫോം സമർപ്പിക്കുന്നതിൽ പിശക് ഉണ്ടായി. ദയവായി വീണ്ടും ശ്രമിക്കുക.
-            </div>
-        </form>
-    </div>
+        <button id="submitBtn">ഫോം സമർപ്പിക്കുക</button>
 
-    <script>
-        // Embedded form data - all unique values from CSV
-        const EMBEDDED_FORM_DATA = {
-        "org_districts": [
-                "Alappuzha North",
-                "Alappuzha South",
-                "Ernakulam City",
-                "Ernakulam East",
-                "Ernakulam North",
-                "Idukki North",
-                "Idukki South",
-                "Kannur North",
-                "Kannur South",
-                "Kasaragod",
-                "Kollam East",
-                "Kollam West",
-                "Kottayam East",
-                "Kottayam West",
-                "Kozhikode City",
-                "Kozhikode North",
-                "Kozhikode Rural",
-                "Malappuram Central",
-                "Malappuram East",
-                "Malappuram West",
-                "Palakkad East",
-                "Palakkad West",
-                "Pathanamthitta",
-                "Thiruvananthapuram City",
-                "Thiruvananthapuram North",
-                "Thiruvananthapuram South",
-                "Thrissur City",
-                "Thrissur North",
-                "Thrissur South",
-                "Wayanad"
-        ],
-        "ac_names_by_district": {
-                "Thiruvananthapuram South": [
-                        "Aruvikkara",
-                        "Kattakada",
-                        "Kovalam",
-                        "Neyyattinkara",
-                        "Parasala"
-                ],
-                "Thiruvananthapuram City": [
-                        "Kazhakkoottam",
-                        "Nemom",
-                        "Thiruvananthapuram",
-                        "Vattiyoorkavu"
-                ],
-                "Thiruvananthapuram North": [
-                        "Attingal",
-                        "Chirayankeezhu",
-                        "Nedumangad",
-                        "Vamanapuram",
-                        "Varkala"
-                ],
-                "Kollam West": [
-                        "Chathannoor",
-                        "Chavara",
-                        "Eravipuram",
-                        "Karunagapally",
-                        "Kollam",
-                        "Kundara"
-                ],
-                "Kollam East": [
-                        "Chadayamangalam",
-                        "Kottarakkara",
-                        "Kunnathur",
-                        "Pathanapuram",
-                        "Punaloor"
-                ],
-                "Pathanamthitta": [
-                        "Adoor",
-                        "Aranmula",
-                        "Konni",
-                        "Ranni",
-                        "Thiruvalla"
-                ],
-                "Alappuzha South": [
-                        "Chengannur",
-                        "Haripad",
-                        "Kayamkulam",
-                        "Mavelikkara"
-                ],
-                "Alappuzha North": [
-                        "Alappuzha",
-                        "Ambalapuzha",
-                        "Aroor",
-                        "Cherthala",
-                        "Kuttanad"
-                ],
-                "Kottayam West": [
-                        "Ettumanoor",
-                        "Kadathuruthy",
-                        "Kottayam",
-                        "Pala",
-                        "Vaikom"
-                ],
-                "Kottayam East": [
-                        "Changanassery",
-                        "Kanjirappally",
-                        "Poonjar",
-                        "Puthuppally"
-                ],
-                "Idukki South": [
-                        "Idukki",
-                        "Peerumade",
-                        "Udumbanchola"
-                ],
-                "Idukki North": [
-                        "Devikulam",
-                        "Thodupuzha"
-                ],
-                "Ernakulam City": [
-                        "Ernakulam",
-                        "Kochi",
-                        "Thrikkakara",
-                        "Thripunithura",
-                        "Vypen"
-                ],
-                "Ernakulam North": [
-                        "Aluva",
-                        "Angamaly",
-                        "Kalamassery",
-                        "Paravur",
-                        "Perumbavoor"
-                ],
-                "Ernakulam East": [
-                        "Kothamangalam",
-                        "Kunnathunad",
-                        "Muvattupuzha",
-                        "Piravom"
-                ],
-                "Thrissur South": [
-                        "Chalakkudy",
-                        "Irinjalakuda",
-                        "Kaipamangalam",
-                        "Kodungallur"
-                ],
-                "Thrissur City": [
-                        "Manalur",
-                        "Nattika",
-                        "Ollur",
-                        "Puthukkad",
-                        "Thrissur"
-                ],
-                "Thrissur North": [
-                        "Chelakkara",
-                        "Guruvayoor",
-                        "Kunnamkulam",
-                        "Wadakkanchery"
-                ],
-                "Palakkad West": [
-                        "Mannarkad",
-                        "Ottapalam",
-                        "Pattambi",
-                        "Shornur",
-                        "Tarur",
-                        "Thrithala"
-                ],
-                "Palakkad East": [
-                        "Alathur",
-                        "Chittur",
-                        "Kongad",
-                        "Malampuzha",
-                        "Nenmara",
-                        "Palakkad"
-                ],
-                "Malappuram West": [
-                        "Ponnani",
-                        "Tanur",
-                        "Thavanur",
-                        "Tirur",
-                        "Tirurangadi",
-                        "Vallikkunnu"
-                ],
-                "Malappuram Central": [
-                        "Kondotty",
-                        "Kottakkal",
-                        "Malappuram",
-                        "Mankada",
-                        "Vengara"
-                ],
-                "Malappuram East": [
-                        "Ernaad",
-                        "Manjeri",
-                        "Nilambur",
-                        "Perinthalmanna",
-                        "Wandoor"
-                ],
-                "Kozhikode Rural": [
-                        "Balussery",
-                        "Elathur",
-                        "Koduvally",
-                        "Thiruvambady"
-                ],
-                "Kozhikode City": [
-                        "Beypore",
-                        "Kozhikode North",
-                        "Kozhikode South",
-                        "Kunnamangalam"
-                ],
-                "Kozhikode North": [
-                        "Koyilandy",
-                        "Kuttiady",
-                        "Nadapuram",
-                        "Perambra",
-                        "Vatakara"
-                ],
-                "Wayanad": [
-                        "Kalpetta",
-                        "Mananthawady",
-                        "Sulthan Bathery"
-                ],
-                "Kannur South": [
-                        "Dharmadam",
-                        "Kuthuparamba",
-                        "Mattannur",
-                        "Peravoor",
-                        "Thalassery"
-                ],
-                "Kannur North": [
-                        "Azhikode",
-                        "Irikkur",
-                        "Kalliassery",
-                        "Kannur",
-                        "Payyannaur",
-                        "Taliparamba"
-                ],
-                "Kasaragod": [
-                        "Kanhangad",
-                        "Kasargod",
-                        "Manjeshwaram",
-                        "Thrikaripur",
-                        "Udma"
-                ]
-        },
-        "mandals_by_ac": {
-                "Parasala": [
-                        "Parassala",
-                        "Vellarada"
-                ],
-                "Neyyattinkara": [
-                        "Kulathoor",
-                        "Neyyattinkara"
-                ],
-                "Kovalam": [
-                        "Balaramapuram",
-                        "Kovalam"
-                ],
-                "Kattakada": [
-                        "Kattakkada",
-                        "Malayinkeezhu"
-                ],
-                "Aruvikkara": [
-                        "Aruvikkara",
-                        "Aryanadu"
-                ],
-                "Kazhakkoottam": [
-                        "Kazhakkoottam",
-                        "Ulloor"
-                ],
-                "Vattiyoorkavu": [
-                        "Pattom",
-                        "Vattiyoorkavu"
-                ],
-                "Thiruvananthapuram": [
-                        "Thiruvananthapuram Central",
-                        "Thiruvananthapuram West"
-                ],
-                "Nemom": [
-                        "Attukal",
-                        "Nemom"
-                ],
-                "Vamanapuram": [
-                        "Palode",
-                        "Vamanapuram"
-                ],
-                "Nedumangad": [
-                        "Nedumangad",
-                        "Pothencode"
-                ],
-                "Chirayankeezhu": [
-                        "Chirayinkeezhu",
-                        "Kadakkavoor"
-                ],
-                "Attingal": [
-                        "Attingal",
-                        "Kilimanoor"
-                ],
-                "Varkala": [
-                        "Navaikulam",
-                        "Varkala"
-                ],
-                "Karunagapally": [
-                        "Karunagappally",
-                        "Oachira"
-                ],
-                "Chathannoor": [
-                        "Chathannoor",
-                        "Paravoor"
-                ],
-                "Kollam": [
-                        "Kollam",
-                        "Thrikkadavoor"
-                ],
-                "Kundara": [
-                        "Kundara",
-                        "Mukhathala"
-                ],
-                "Chavara": [
-                        "Chavara",
-                        "Panmana"
-                ],
-                "Eravipuram": [
-                        "Eravipuram",
-                        "Kilikolloor"
-                ],
-                "Kunnathur": [
-                        "Kunnathur",
-                        "Sasthamcotta"
-                ],
-                "Kottarakkara": [
-                        "Kottarakkara",
-                        "Neduvathur"
-                ],
-                "Pathanapuram": [
-                        "Kunnikkodu",
-                        "Pathanapuram"
-                ],
-                "Punaloor": [
-                        "Anchal",
-                        "Punalur"
-                ],
-                "Chadayamangalam": [
-                        "Chadayamangalam",
-                        "Chithara"
-                ],
-                "Thiruvalla": [
-                        "Mallappally",
-                        "Thiruvalla"
-                ],
-                "Ranni": [
-                        "Ayiroor",
-                        "Ranni"
-                ],
-                "Aranmula": [
-                        "Aranmula",
-                        "Pathanamthitta"
-                ],
-                "Konni": [
-                        "Chittar",
-                        "Konni"
-                ],
-                "Adoor": [
-                        "Adoor",
-                        "Pandalam"
-                ],
-                "Chengannur": [
-                        "Chengannur",
-                        "Mannar"
-                ],
-                "Haripad": [
-                        "Haripad",
-                        "Karthikappalli"
-                ],
-                "Mavelikkara": [
-                        "Charummoodu",
-                        "Mavelikkara"
-                ],
-                "Kayamkulam": [
-                        "Chettikulangara",
-                        "Kayamkulam"
-                ],
-                "Aroor": [
-                        "Aroor",
-                        "Panavally"
-                ],
-                "Cherthala": [
-                        "Cherthala",
-                        "Muhamma"
-                ],
-                "Alappuzha": [
-                        "Alappuzha",
-                        "Mararikkulam"
-                ],
-                "Ambalapuzha": [
-                        "Ambalappuzha",
-                        "Mullakkal"
-                ],
-                "Kuttanad": [
-                        "Kuttanadu",
-                        "Thakazhy"
-                ],
-                "Vaikom": [
-                        "Thalayolaparambu",
-                        "Vaikom"
-                ],
-                "Kadathuruthy": [
-                        "Kaduthuruthy",
-                        "Kuravilangadu"
-                ],
-                "Ettumanoor": [
-                        "Ettumanoor",
-                        "Kumarakom"
-                ],
-                "Pala": [
-                        "Bharananganam",
-                        "Pala"
-                ],
-                "Kottayam": [
-                        "Kottayam",
-                        "Panachikadu"
-                ],
-                "Poonjar": [
-                        "Mundakkayam",
-                        "Poonjar"
-                ],
-                "Puthuppally": [
-                        "Ayarkunnam",
-                        "Puthuppally"
-                ],
-                "Kanjirappally": [
-                        "Kanjirappally",
-                        "Vazhoor"
-                ],
-                "Changanassery": [
-                        "Changanassery",
-                        "Madappally"
-                ],
-                "Idukki": [
-                        "Idukki",
-                        "Kattappana"
-                ],
-                "Udumbanchola": [
-                        "Udumbanchola",
-                        "Vandanmedu"
-                ],
-                "Peerumade": [
-                        "Elappara",
-                        "Peermade"
-                ],
-                "Devikulam": [
-                        "Adimali",
-                        "Devikulam"
-                ],
-                "Thodupuzha": [
-                        "Thodupuzha",
-                        "Vannappuram"
-                ],
-                "Vypen": [
-                        "Cherayi",
-                        "Vypin"
-                ],
-                "Ernakulam": [
-                        "Ernakulam North",
-                        "Ernakulam South"
-                ],
-                "Kochi": [
-                        "Kochi",
-                        "Mattancherry"
-                ],
-                "Thripunithura": [
-                        "Palluruthy",
-                        "Thrippunithura"
-                ],
-                "Thrikkakara": [
-                        "Pallarivattom",
-                        "Thrikkakara"
-                ],
-                "Paravur": [
-                        "Paravur",
-                        "Vadakkekara"
-                ],
-                "Kalamassery": [
-                        "Kalamassery",
-                        "Karumalloor"
-                ],
-                "Angamaly": [
-                        "Angamaly",
-                        "Kalady"
-                ],
-                "Aluva": [
-                        "Aluva",
-                        "Nedumbassery"
-                ],
-                "Perumbavoor": [
-                        "Kuruppampady",
-                        "Perumbavoor"
-                ],
-                "Kunnathunad": [
-                        "Kolenchery",
-                        "Kunnathunadu"
-                ],
-                "Piravom": [
-                        "Chottanikara",
-                        "Piravom"
-                ],
-                "Muvattupuzha": [
-                        "Muvattupuzha",
-                        "Vazhakkulam"
-                ],
-                "Kothamangalam": [
-                        "Kavalangad",
-                        "Kothamangalam"
-                ],
-                "Kaipamangalam": [
-                        "Edavilangu",
-                        "Kaipamangalam"
-                ],
-                "Chalakkudy": [
-                        "Chalakudy",
-                        "Koratty"
-                ],
-                "Irinjalakuda": [
-                        "Aloor",
-                        "Irinjalakuda"
-                ],
-                "Kodungallur": [
-                        "Kodungallur",
-                        "Mala"
-                ],
-                "Manalur": [
-                        "Manalur",
-                        "Pavaratty"
-                ],
-                "Ollur": [
-                        "Ollur",
-                        "Peechi"
-                ],
-                "Nattika": [
-                        "Cherpu",
-                        "Nattika"
-                ],
-                "Puthukkad": [
-                        "Amballur",
-                        "Puthukkad"
-                ],
-                "Thrissur": [
-                        "Thrissur East",
-                        "Thrissur west"
-                ],
-                "Guruvayoor": [
-                        "Chavakkad",
-                        "Guruvayoor"
-                ],
-                "Kunnamkulam": [
-                        "Erumapetty",
-                        "Kunnamkulam"
-                ],
-                "Chelakkara": [
-                        "Chelakkara",
-                        "Cheruthuruthy"
-                ],
-                "Wadakkanchery": [
-                        "Kaipparambu",
-                        "Wadakkanchery"
-                ],
-                "Thrithala": [
-                        "Kappur",
-                        "Thrithala"
-                ],
-                "Pattambi": [
-                        "Koppam",
-                        "Pattambi"
-                ],
-                "Ottapalam": [
-                        "Ottapalam",
-                        "Sreekrishnapuram"
-                ],
-                "Shornur": [
-                        "Cherpulassery",
-                        "Shornur"
-                ],
-                "Mannarkad": [
-                        "Attappady",
-                        "Mannarkkad"
-                ],
-                "Tarur": [
-                        "Tharur",
-                        "Vadakkenchery"
-                ],
-                "Kongad": [
-                        "Karimba",
-                        "Kongad"
-                ],
-                "Palakkad": [
-                        "Palakkad",
-                        "Pirayiri"
-                ],
-                "Malampuzha": [
-                        "Malampuzha",
-                        "Puthussery"
-                ],
-                "Alathur": [
-                        "Alathur",
-                        "Vandazhi"
-                ],
-                "Chittur": [
-                        "Chittoor",
-                        "Kozhinjampara"
-                ],
-                "Nenmara": [
-                        "Kollengode",
-                        "Nenmara"
-                ],
-                "Vallikkunnu": [
-                        "Pallikkal",
-                        "Vallikkunnu"
-                ],
-                "Tirur": [
-                        "Thirunavaya",
-                        "Tirur"
-                ],
-                "Tanur": [
-                        "Ponmundam",
-                        "Tanur"
-                ],
-                "Tirurangadi": [
-                        "Edarikkodu",
-                        "Tirurangadi"
-                ],
-                "Thavanur": [
-                        "Thavanur",
-                        "Thrippangodu"
-                ],
-                "Ponnani": [
-                        "Changaramkulam",
-                        "Ponnani"
-                ],
-                "Kondotty": [
-                        "Kondotty",
-                        "Vazhakkad"
-                ],
-                "Malappuram": [
-                        "Malappuram",
-                        "Pookkottur"
-                ],
-                "Kottakkal": [
-                        "Kottakkal",
-                        "Kuttippuram"
-                ],
-                "Vengara": [
-                        "Parappur",
-                        "Vengara"
-                ],
-                "Mankada": [
-                        "Kolathur",
-                        "Mankada"
-                ],
-                "Nilambur": [
-                        "Edakkara",
-                        "Nilambur"
-                ],
-                "Ernaad": [
-                        "Edavanna",
-                        "Eranad"
-                ],
-                "Wandoor": [
-                        "Kalikkavu",
-                        "Wandoor"
-                ],
-                "Manjeri": [
-                        "Manjeri",
-                        "Pandikkad"
-                ],
-                "Perinthalmanna": [
-                        "Elamkulam",
-                        "Perinthalmanna"
-                ],
-                "Balussery": [
-                        "Balussery",
-                        "Ulliyeri"
-                ],
-                "Elathur": [
-                        "Chelannur",
-                        "Elathur"
-                ],
-                "Koduvally": [
-                        "Koduvally",
-                        "Thamarassery"
-                ],
-                "Thiruvambady": [
-                        "Mukkam",
-                        "Thiruvambady"
-                ],
-                "Kunnamangalam": [
-                        "Kunnamangalam",
-                        "Olavanna"
-                ],
-                "Beypore": [
-                        "Beypore",
-                        "Ramanattukara"
-                ],
-                "Kozhikode North": [
-                        "Kozhikode North",
-                        "Nadakkavu"
-                ],
-                "Kozhikode South": [
-                        "Kozhikode South",
-                        "Puthiyara"
-                ],
-                "Nadapuram": [
-                        "Nadapuram",
-                        "Naripatta"
-                ],
-                "Kuttiady": [
-                        "Kuttiady",
-                        "Villiappally"
-                ],
-                "Perambra": [
-                        "Meppayur",
-                        "Perambra"
-                ],
-                "Koyilandy": [
-                        "Koyilandy",
-                        "Payyoli"
-                ],
-                "Vatakara": [
-                        "Onchiyam",
-                        "Vadakara"
-                ],
-                "Mananthawady": [
-                        "Mananthavady",
-                        "Panamaram"
-                ],
-                "Sulthan Bathery": [
-                        "Pulpally",
-                        "Sulthan Bathery"
-                ],
-                "Kalpetta": [
-                        "Kalpetta",
-                        "Padinjarathara"
-                ],
-                "Mattannur": [
-                        "Chittariparamba",
-                        "Mattannur"
-                ],
-                "Dharmadam": [
-                        "Chakkarakkal",
-                        "Dharmadom"
-                ],
-                "Thalassery": [
-                        "Kathiroor",
-                        "Thalassery"
-                ],
-                "Kuthuparamba": [
-                        "Kuthuparamba",
-                        "Panoor"
-                ],
-                "Peravoor": [
-                        "Iritty",
-                        "Peravoor"
-                ],
-                "Kalliassery": [
-                        "Kalliassery",
-                        "Madayi"
-                ],
-                "Azhikode": [
-                        "Azhikode",
-                        "Chirakkal"
-                ],
-                "Payyannaur": [
-                        "Payyannur",
-                        "Peringome"
-                ],
-                "Irikkur": [
-                        "Alakkode",
-                        "Irikkur"
-                ],
-                "Taliparamba": [
-                        "Mayyil",
-                        "Taliparamba"
-                ],
-                "Kannur": [
-                        "Edakkad",
-                        "Kannur"
-                ],
-                "Kasargod": [
-                        "Badiadka",
-                        "Kasaragod"
-                ],
-                "Udma": [
-                        "Muliyar",
-                        "Udma"
-                ],
-                "Manjeshwaram": [
-                        "Kumbla",
-                        "Manjeshwar"
-                ],
-                "Kanhangad": [
-                        "Kanhangad",
-                        "Vellarikundu"
-                ],
-                "Thrikaripur": [
-                        "Nileshwaram",
-                        "Trikaripur"
-                ]
-        }
-};
-        let formData = EMBEDDED_FORM_DATA;
+        <div class="success-message" id="successMessage"></div>
+        <div class="error-message" id="errorMessage"></div>
+    </form>
+</div>
 
-        // Load form data (now using embedded data)
-        async function loadFormData() {
-            // Use embedded data directly
-            formData = EMBEDDED_FORM_DATA;
-            
-            // Verify data structure
-            if (!formData.org_districts || !Array.isArray(formData.org_districts)) {
-                console.error('Invalid data structure: org_districts array not found');
-                alert('Error: Invalid form data structure.');
-                return;
-            }
-            
-            console.log(`Loaded ${formData.org_districts.length} Organisational Districts`);
-            populateOrgDistricts();
-        }
+<script>
+/* 🔴 PUT YOUR REAL GOOGLE APPS SCRIPT URL HERE */
+const GOOGLE_SHEETS_WEB_APP_URL =
+"https://script.google.com/a/macros/varaheanalytics.com/s/AKfycbYqA2YCBRJmwrmcfvtdNjrPvJFzD6ELnXDFuEJNGQUAXeAst0dIjMcDJ9URW3qcZsau/exec";
 
-        // Populate Organisational Districts dropdown
-        function populateOrgDistricts() {
-            const districtSelect = document.getElementById('orgDistrict');
-            
-            // Clear existing options except the first placeholder
-            districtSelect.innerHTML = '<option value="">-- സംഘടനാ ജില്ല തിരഞ്ഞെടുക്കുക --</option>';
-            
-            if (!formData || !formData.org_districts || formData.org_districts.length === 0) {
-                console.error('No Organisational Districts data available');
-                return;
-            }
-            
-            // Populate all districts
-            formData.org_districts.forEach(district => {
-                if (district && district.trim()) {
-                    const option = document.createElement('option');
-                    option.value = district.trim();
-                    option.textContent = district.trim();
-                    districtSelect.appendChild(option);
-                }
-            });
-            
-            console.log(`Populated ${districtSelect.options.length - 1} Organisational Districts in dropdown`);
-        }
+/* Dynamic Booth Fields */
+document.getElementById("noOfBooths").addEventListener("change", e => {
+    const count = parseInt(e.target.value || 0);
+    const container = document.getElementById("boothDetailsContainer");
+    container.innerHTML = "";
 
-        // Populate AC Names based on Organisational District
-        function populateACNames(orgDistrict) {
-            const acSelect = document.getElementById('acName');
-            
-            // Reset mandal dropdown
-            document.getElementById('orgMandal').innerHTML = '<option value="">-- സംഘടനാ മണ്ഡലം തിരഞ്ഞെടുക്കുക --</option>';
-            document.getElementById('orgMandal').disabled = true;
-            document.getElementById('orgMandal').value = '';
+    for (let i = 1; i <= count; i++) {
+        container.innerHTML += `
+            <div class="booth-set">
+                <label>ബൂത്ത് നമ്പർ ${i}</label>
+                <input id="boothNo_${i}" required>
 
-            if (!orgDistrict) {
-                acSelect.innerHTML = '<option value="">-- നിയോജക മണ്ഡലം തിരഞ്ഞെടുക്കുക --</option>';
-                acSelect.disabled = true;
-                acSelect.value = '';
-                return;
-            }
+                <label>ബൂത്ത് ഇൻചാർജ് ${i}</label>
+                <input id="boothIncharge_${i}" required>
 
-            const acNames = formData.ac_names_by_district[orgDistrict] || [];
-            acSelect.innerHTML = '<option value="">-- നിയോജക മണ്ഡലം തിരഞ്ഞെടുക്കുക --</option>';
-            
-            acNames.forEach(acName => {
-                const option = document.createElement('option');
-                option.value = acName;
-                option.textContent = acName;
-                acSelect.appendChild(option);
-            });
+                <label>മൊബൈൽ നമ്പർ ${i}</label>
+                <input id="phone_${i}" required>
+            </div>`;
+    }
+});
 
-            acSelect.disabled = false;
-        }
+/* Form Submit */
+document.getElementById("orgForm").addEventListener("submit", e => {
+    e.preventDefault();
 
-        // Populate Organisational Mandals based on AC Name
-        function populateMandals(acName) {
-            const mandalSelect = document.getElementById('orgMandal');
+    const btn = document.getElementById("submitBtn");
+    const success = document.getElementById("successMessage");
+    const error = document.getElementById("errorMessage");
 
-            if (!acName) {
-                mandalSelect.innerHTML = '<option value="">-- സംഘടനാ മണ്ഡലം തിരഞ്ഞെടുക്കുക --</option>';
-                mandalSelect.disabled = true;
-                mandalSelect.value = '';
-                return;
-            }
+    success.style.display = "none";
+    error.style.display = "none";
+    btn.disabled = true;
 
-            const mandals = formData.mandals_by_ac[acName] || [];
-            mandalSelect.innerHTML = '<option value="">-- സംഘടനാ മണ്ഡലം തിരഞ്ഞെടുക്കുക --</option>';
-            
-            mandals.forEach(mandal => {
-                const option = document.createElement('option');
-                option.value = mandal;
-                option.textContent = mandal;
-                mandalSelect.appendChild(option);
-            });
-
-            mandalSelect.disabled = false;
-        }
-
-        // Create dynamic booth fields based on number selected
-        function createBoothFields(count) {
-            const container = document.getElementById('boothDetailsContainer');
-            container.innerHTML = ''; // Clear existing fields
-            
-            if (!count || count === '0') {
-                return;
-            }
-            
-            const numBooths = parseInt(count);
-            
-            for (let i = 1; i <= numBooths; i++) {
-                // Create a wrapper div for each booth set
-                const boothSet = document.createElement('div');
-                boothSet.className = 'booth-set';
-                
-                // Add title for each booth set
-                const boothTitle = document.createElement('div');
-                boothTitle.className = 'booth-set-title';
-                boothTitle.textContent = `ബൂത്ത് ${i} വിവരങ്ങൾ`;
-                boothSet.appendChild(boothTitle);
-                
-                // Booth Number field
-                const boothNoGroup = document.createElement('div');
-                boothNoGroup.className = 'form-group';
-                const boothNoLabel = document.createElement('label');
-                boothNoLabel.setAttribute('for', `boothNo_${i}`);
-                boothNoLabel.innerHTML = `ബൂത്ത് നമ്പർ ${i} <span class="required">*</span>`;
-                const boothNoInput = document.createElement('input');
-                boothNoInput.type = 'text';
-                boothNoInput.id = `boothNo_${i}`;
-                boothNoInput.name = `boothNo_${i}`;
-                boothNoInput.placeholder = `ബൂത്ത് നമ്പർ ${i} നൽകുക`;
-                boothNoInput.required = true;
-                boothNoGroup.appendChild(boothNoLabel);
-                boothNoGroup.appendChild(boothNoInput);
-                
-                // Booth Incharge field
-                const boothInchargeGroup = document.createElement('div');
-                boothInchargeGroup.className = 'form-group';
-                const boothInchargeLabel = document.createElement('label');
-                boothInchargeLabel.setAttribute('for', `boothIncharge_${i}`);
-                boothInchargeLabel.innerHTML = `ബൂത്ത് ഇൻചാർജ് ${i} <span class="required">*</span>`;
-                const boothInchargeInput = document.createElement('input');
-                boothInchargeInput.type = 'text';
-                boothInchargeInput.id = `boothIncharge_${i}`;
-                boothInchargeInput.name = `boothIncharge_${i}`;
-                boothInchargeInput.placeholder = `ബൂത്ത് ഇൻചാർജ് പേര് ${i} നൽകുക`;
-                boothInchargeInput.required = true;
-                boothInchargeGroup.appendChild(boothInchargeLabel);
-                boothInchargeGroup.appendChild(boothInchargeInput);
-                
-                // Phone Number field
-                const phoneGroup = document.createElement('div');
-                phoneGroup.className = 'form-group';
-                const phoneLabel = document.createElement('label');
-                phoneLabel.setAttribute('for', `phoneNumber_booth_${i}`);
-                phoneLabel.innerHTML = `മൊബൈൽ നമ്പർ ${i} <span class="required">*</span>`;
-                const phoneInput = document.createElement('input');
-                phoneInput.type = 'tel';
-                phoneInput.id = `phoneNumber_booth_${i}`;
-                phoneInput.name = `phoneNumber_booth_${i}`;
-                phoneInput.placeholder = `മൊബൈൽ നമ്പർ ${i} നൽകുക`;
-                phoneInput.required = true;
-                phoneGroup.appendChild(phoneLabel);
-                phoneGroup.appendChild(phoneInput);
-                
-                // Append all fields to the booth set
-                boothSet.appendChild(boothNoGroup);
-                boothSet.appendChild(boothInchargeGroup);
-                boothSet.appendChild(phoneGroup);
-                
-                // Append booth set to container
-                container.appendChild(boothSet);
-            }
-        }
-
-        // Event listeners
-        document.getElementById('orgDistrict').addEventListener('change', function() {
-            populateACNames(this.value);
+    const booths = [];
+    const count = parseInt(document.getElementById("noOfBooths").value || 0);
+    for (let i = 1; i <= count; i++) {
+        booths.push({
+            boothNo: document.getElementById(`boothNo_${i}`).value,
+            boothIncharge: document.getElementById(`boothIncharge_${i}`).value,
+            phone: document.getElementById(`phone_${i}`).value
         });
+    }
 
-        document.getElementById('acName').addEventListener('change', function() {
-            populateMandals(this.value);
-        });
+    const payload = {
+        orgDistrict: orgDistrict.value,
+        acName: acName.value,
+        orgMandal: orgMandal.value,
+        mandalPresident: mandalPresident.value,
+        mandalPrabhari: mandalPrabhari.value,
+        shaktiKendraIncharge: shaktiKendraIncharge.value,
+        phoneNumber: phoneNumber.value,
+        position: position.value,
+        booths,
+        timestamp: new Date().toISOString()
+    };
 
-        document.getElementById('noOfBooths').addEventListener('change', function() {
-            createBoothFields(this.value);
-        });
-
-        // Form submission
-        document.getElementById('orgForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const successMsg = document.getElementById('successMessage');
-            const errorMsg = document.getElementById('errorMessage');
-            
-            // Hide previous messages
-            successMsg.style.display = 'none';
-            errorMsg.style.display = 'none';
-
-            // Disable submit button and show loading
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = 'സമർപ്പിക്കുന്നു<span class="loading"></span>';
-
-            // Collect form data
-            const formDataObj = {
-                orgDistrict: document.getElementById('orgDistrict').value,
-                acName: document.getElementById('acName').value,
-                orgMandal: document.getElementById('orgMandal').value,
-                mandalPresident: document.getElementById('mandalPresident').value,
-                mandalPrabhari: document.getElementById('mandalPrabhari').value,
-                shaktiKendraIncharge: document.getElementById('shaktiKendraIncharge').value,
-                phoneNumber: document.getElementById('phoneNumber').value,
-                position: document.getElementById('position').value,
-                noOfBooths: document.getElementById('noOfBooths').value,
-                booths: [],
-                timestamp: new Date().toISOString()
-            };
-
-            // Collect all dynamic booth fields
-            const numBooths = parseInt(formDataObj.noOfBooths);
-            for (let i = 1; i <= numBooths; i++) {
-                const boothData = {
-                    boothNo: document.getElementById(`boothNo_${i}`)?.value || '',
-                    boothIncharge: document.getElementById(`boothIncharge_${i}`)?.value || '',
-                    phoneNumber: document.getElementById(`phoneNumber_booth_${i}`)?.value || ''
-                };
-                formDataObj.booths.push(boothData);
-            }
-
-            // Send form data to Google Sheets
-            // IMPORTANT: Replace 'YOUR_WEB_APP_URL' with your Google Apps Script Web App URL
-            const GOOGLE_SHEETS_WEB_APP_URL = 'YOUR_WEB_APP_URL'; // Replace this with your Web App URL from Google Apps Script
-            
-            if (GOOGLE_SHEETS_WEB_APP_URL === 'YOUR_WEB_APP_URL') {
-                // Fallback: Download as JSON if Web App URL not configured
-                try {
-                    const dataStr = JSON.stringify(formDataObj, null, 2);
-                    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-                    const url = URL.createObjectURL(dataBlob);
-                    const link = document.createElement('a');
-                    link.href = url;
-                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
-                    link.download = `booth-verification-${timestamp}.json`;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    URL.revokeObjectURL(url);
-                    
-                    successMsg.style.display = 'block';
-                    successMsg.innerHTML = '⚠️ Google Sheets URL not configured. Data downloaded as JSON file. Please configure Web App URL in the form code.';
-                    document.getElementById('orgForm').reset();
-                    resetDropdowns();
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'ഫോം സമർപ്പിക്കുക';
-                    successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                } catch (error) {
-                    console.error('Error:', error);
-                    errorMsg.style.display = 'block';
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'ഫോം സമർപ്പിക്കുക';
-                }
-                return;
-            }
-            
-            // Send to Google Sheets
-            fetch(GOOGLE_SHEETS_WEB_APP_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formDataObj)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    console.log('Data saved to Google Sheets:', data);
-                    successMsg.style.display = 'block';
-                    successMsg.innerHTML = 'ഫോം വിജയകരമായി സമർപ്പിച്ചു! ഡാറ്റ Google Sheet-ൽ സേവ് ചെയ്തു. നിങ്ങളുടെ സമർപ്പണത്തിന് നന്ദി.';
-                    document.getElementById('orgForm').reset();
-                    resetDropdowns();
-                } else {
-                    throw new Error(data.error || 'Unknown error');
-                }
-            })
-            .catch(error => {
-                console.error('Error sending data to Google Sheets:', error);
-                errorMsg.style.display = 'block';
-                errorMsg.innerHTML = 'ഡാറ്റ സമർപ്പിക്കുന്നതിൽ പിശക് ഉണ്ടായി. ദയവായി വീണ്ടും ശ്രമിക്കുക. Error: ' + error.message;
-            })
-            .finally(() => {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'ഫോം സമർപ്പിക്കുക';
-                if (successMsg.style.display === 'block') {
-                    successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
-            });
-        });
-
-        function resetDropdowns() {
-            document.getElementById('acName').innerHTML = '<option value="">-- നിയോജക മണ്ഡലം തിരഞ്ഞെടുക്കുക --</option>';
-            document.getElementById('acName').disabled = true;
-            document.getElementById('orgMandal').innerHTML = '<option value="">-- സംഘടനാ മണ്ഡലം തിരഞ്ഞെടുക്കുക --</option>';
-            document.getElementById('orgMandal').disabled = true;
-            // Clear dynamic booth fields
-            document.getElementById('boothDetailsContainer').innerHTML = '';
+    fetch(GOOGLE_SHEETS_WEB_APP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.text())
+    .then(text => {
+        if (text.trim() === "success") {
+            success.innerHTML = "✅ ഫോം വിജയകരമായി സമർപ്പിച്ചു";
+            success.style.display = "block";
+            document.getElementById("orgForm").reset();
+            document.getElementById("boothDetailsContainer").innerHTML = "";
+        } else {
+            throw new Error(text);
         }
+    })
+    .catch(() => {
+        error.innerHTML = "❌ ഡാറ്റ സേവ് ചെയ്യുന്നതിൽ പിശക്";
+        error.style.display = "block";
+    })
+    .finally(() => btn.disabled = false);
+});
+</script>
 
-        // Load form data on page load
-        loadFormData();
-    </script>
 </body>
 </html>
+
 
